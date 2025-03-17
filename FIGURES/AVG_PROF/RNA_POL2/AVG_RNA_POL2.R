@@ -1,0 +1,189 @@
+#####################################################################################-
+#          LOAD LIBRARIES  ----
+#####################################################################################-
+
+library(GenomicRanges)
+library(rtracklayer)
+library(ggplot2)
+library(dplyr)
+library(seqplots)
+
+#####################################################################################-
+#         FUNCTIONS  ----
+#####################################################################################-
+
+workdir = "~/Bureau/tdefreitas_genobioinfo/PROJET_H2AV_2025/"
+
+source(paste0(workdir, "functionR/AVG_PROFILE.R"))
+
+tmp <- paste0(workdir,"FIGURES/AVG_PROF/TMPgetPlotSetArray")
+
+#####################################################################################-
+#         DATA  ----
+#####################################################################################-
+
+### GENOME REF 
+
+r6_ref_genes = readRDS(paste0(workdir,"DATA/r6.13/TxDb.GR.dm6.RDS"))
+seqlevels(r6_ref_genes) <- gsub("chr", "", seqlevels(r6_ref_genes))
+
+
+### BIGWIG FILES
+
+pol2_ctrl_N_RPGC = paste0(workdir, "DATA/CHIPSEQ/pol2_ctrl_N_filt_sort_RPGC.bw")
+pol2_nelf_N_RPGC = paste0(workdir, "DATA/CHIPSEQ/pol2_nelf_N_filt_sort_RPGC.bw")
+
+
+#### CHIPSEQ
+
+H3K36me3_FSEA4_Luc = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FSEA4_Luc.bigWig")
+H3K36me3_FSEA4_Nelf = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FSEA4_Nelf.bigWig")
+
+H3K36me3_FWT3_Luc = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FWT3_Luc.bigWig")
+H3K36me3_FWT3_Nelf = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FWT3_Nelf.bigWig")
+
+#####################################################################################-
+
+### GENE GROUPES 
+
+PAUSE_INDICE_VEC = readRDS(paste0(workdir, "DATA/LIST_FEATURES/PAUSE_INDICE_VEC.RDS"))
+DELTA_PAUSE_IND_pol2_nelf_N = PAUSE_INDICE_VEC$DELTA_PAUSE_IND_pol2_nelf_N
+
+PAUSE_IND_pol2_ctrl_N = PAUSE_INDICE_VEC$PAUSE_IND_pol2_ctrl_N
+
+PAUSE_IND_pol2_start_TSS_WT_KD = PAUSE_INDICE_VEC$PAUSE_IND_pol2_start_TSS_WT_KD
+
+getNameList = function(Vec, topdown = "top", prct = 10){
+  Vec = Vec[order(Vec, decreasing=T)]
+  if(topdown %in% "top"){
+    GN = names(Vec[Vec > quantile(Vec, (100-prct)/100)])
+  }
+  if(topdown %in% "down"){
+    GN = names(Vec[Vec < quantile(Vec, (prct)/100)])
+  }
+  if(topdown %in% "mid"){
+    tmp1 = names(Vec[Vec < quantile(Vec, (100/2-prct/2)/100)])
+    tmp2 = names(Vec[Vec < quantile(Vec, (100/2-prct/2+prct)/100)])
+    GN = tmp2[tmp2 %ni% tmp1]
+  }
+  return(GN)
+}
+
+
+len = length(DELTA_PAUSE_IND_pol2_nelf_N)
+CTRL_60_65_DELTA_PAUSE_IND_pol2_nelf_N = names(DELTA_PAUSE_IND_pol2_nelf_N[(len*0.6) : (len*0.65)])
+UP_5_DELTA_PAUSE_IND_pol2_nelf_N = getNameList(DELTA_PAUSE_IND_pol2_nelf_N, topdown = "top", prct = 5)
+UP_1_DELTA_PAUSE_IND_pol2_nelf_N = getNameList(DELTA_PAUSE_IND_pol2_nelf_N, topdown = "top", prct = 1)
+DN_5_DELTA_PAUSE_IND_pol2_nelf_N = getNameList(DELTA_PAUSE_IND_pol2_nelf_N, topdown = "down", prct = 5)
+DN_1_DELTA_PAUSE_IND_pol2_nelf_N = getNameList(DELTA_PAUSE_IND_pol2_nelf_N, topdown = "down", prct = 1)
+
+len = length(PAUSE_IND_pol2_ctrl_N)
+CTRL_60_65_PAUSE_IND_pol2_ctrl_N = names(PAUSE_IND_pol2_ctrl_N[(len*0.6) : (len*0.65)])
+UP_5_PAUSE_IND_pol2_ctrl_N = getNameList(PAUSE_IND_pol2_ctrl_N, topdown = "top", prct = 5)
+UP_1_PAUSE_IND_pol2_ctrl_N = getNameList(PAUSE_IND_pol2_ctrl_N, topdown = "top", prct = 1)
+DN_5_PAUSE_IND_pol2_ctrl_N = getNameList(PAUSE_IND_pol2_ctrl_N, topdown = "down", prct = 5)
+
+
+
+len = length(PAUSE_IND_pol2_start_TSS_WT_KD)
+CTRL_60_65_PAUSE_IND_pol2_start_TSS_WT_KD = names(PAUSE_IND_pol2_start_TSS_WT_KD[(len*0.6) : (len*0.65)])
+UP_5_PAUSE_IND_pol2_start_TSS_WT_KD = getNameList(PAUSE_IND_pol2_start_TSS_WT_KD, topdown = "top", prct = 5)
+UP_1_PAUSE_IND_pol2_start_TSS_WT_KD = getNameList(PAUSE_IND_pol2_start_TSS_WT_KD, topdown = "top", prct = 1)
+DN_5_PAUSE_IND_pol2_start_TSS_WT_KD = getNameList(PAUSE_IND_pol2_start_TSS_WT_KD, topdown = "down", prct = 5)
+DN_1_PAUSE_IND_pol2_start_TSS_WT_KD = getNameList(PAUSE_IND_pol2_start_TSS_WT_KD, topdown = "down", prct = 1)
+
+
+
+## GET GRANGES COORDS OF FEATURES TO PLOT AROUND
+get_GR_feat = function(refGN, GNlist){
+  myovlp=refGN[refGN$name %in% GNlist]
+  return(myovlp)
+}
+
+GR_UP_5_DELTA_PAUSE_IND_pol2_nelf_N = get_GR_feat(r6_ref_genes,UP_5_DELTA_PAUSE_IND_pol2_nelf_N)
+GR_UP_1_DELTA_PAUSE_IND_pol2_nelf_N = get_GR_feat(r6_ref_genes,UP_1_DELTA_PAUSE_IND_pol2_nelf_N)
+GR_CTRL_60_65_DELTA_PAUSE_IND_pol2_nelf_N = get_GR_feat(r6_ref_genes,CTRL_60_65_DELTA_PAUSE_IND_pol2_nelf_N)
+GR_DN_5_DELTA_PAUSE_IND_pol2_nelf_N = get_GR_feat(r6_ref_genes,DN_5_DELTA_PAUSE_IND_pol2_nelf_N)
+GR_DN_1_DELTA_PAUSE_IND_pol2_nelf_N = get_GR_feat(r6_ref_genes,DN_1_DELTA_PAUSE_IND_pol2_nelf_N)
+GR_list_toPlot_delta = c("GR_UP_5_DELTA_PAUSE_IND_pol2_nelf_N", "GR_UP_1_DELTA_PAUSE_IND_pol2_nelf_N", "GR_CTRL_60_65_DELTA_PAUSE_IND_pol2_nelf_N", "GR_DN_5_DELTA_PAUSE_IND_pol2_nelf_N", "GR_DN_1_DELTA_PAUSE_IND_pol2_nelf_N")
+
+
+GR_UP_5_PAUSE_IND_pol2_ctrl_N = get_GR_feat(r6_ref_genes,UP_5_PAUSE_IND_pol2_ctrl_N)
+GR_UP_1_PAUSE_IND_pol2_ctrl_N = get_GR_feat(r6_ref_genes,UP_1_PAUSE_IND_pol2_ctrl_N)
+GR_CTRL_60_65_PAUSE_IND_pol2_ctrl_N = get_GR_feat(r6_ref_genes,CTRL_60_65_PAUSE_IND_pol2_ctrl_N)
+GR_DN_5_PAUSE_IND_pol2_ctrl_N = get_GR_feat(r6_ref_genes,DN_5_PAUSE_IND_pol2_ctrl_N)
+GR_list_toPlot_ctrl = c("GR_UP_5_PAUSE_IND_pol2_ctrl_N", "GR_UP_1_PAUSE_IND_pol2_ctrl_N", "GR_CTRL_60_65_PAUSE_IND_pol2_ctrl_N", "GR_DN_5_PAUSE_IND_pol2_ctrl_N")
+
+
+GR_UP_5_PAUSE_IND_pol2_start_TSS_WT_KD = get_GR_feat(r6_ref_genes,UP_5_PAUSE_IND_pol2_start_TSS_WT_KD)
+GR_UP_1_PAUSE_IND_pol2_start_TSS_WT_KD= get_GR_feat(r6_ref_genes,UP_1_PAUSE_IND_pol2_start_TSS_WT_KD)
+GR_CTRL_60_65_PAUSE_IND_pol2_start_TSS_WT_KD= get_GR_feat(r6_ref_genes,CTRL_60_65_PAUSE_IND_pol2_start_TSS_WT_KD)
+GR_DN_5_PAUSE_IND_pol2_start_TSS_WT_KD = get_GR_feat(r6_ref_genes,DN_5_PAUSE_IND_pol2_start_TSS_WT_KD)
+GR_DN_1_PAUSE_IND_pol2_start_TSS_WT_KD = get_GR_feat(r6_ref_genes,DN_1_PAUSE_IND_pol2_start_TSS_WT_KD)
+GR_list_toPlot = c("GR_UP_5_PAUSE_IND_pol2_start_TSS_WT_KD", "GR_UP_1_PAUSE_IND_pol2_start_TSS_WT_KD", "GR_CTRL_60_65_PAUSE_IND_pol2_start_TSS_WT_KD", "GR_DN_5_PAUSE_IND_pol2_start_TSS_WT_KD", "GR_DN_1_PAUSE_IND_pol2_start_TSS_WT_KD")
+
+
+
+#####################################################################################-
+#         PLOT  ----
+#####################################################################################-
+
+# POL2 DEALTA PAUSE INDICE - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_DELTA_PAUSE_IND.pdf"))
+for(GR in GR_list_toPlot_delta){
+  seqPlotSDoutliers_scaleFact(c(pol2_ctrl_N_RPGC, pol2_nelf_N_RPGC),tmp,GR,c(0,4),c(5000,5000),type="af",bin=10,
+                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
+
+# POL2 PAUSE INDICE CONTROL - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_PAUSE_IND_CTRL.pdf"))
+for(GR in GR_list_toPlot_ctrl){
+  seqPlotSDoutliers_scaleFact(c(pol2_ctrl_N_RPGC, pol2_nelf_N_RPGC),tmp,GR,c(0,4),c(5000,5000),type="af",bin=10,
+                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
+
+
+# POL2 PAUSE INDICE start TSS(-200 / +300) WT-KD - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_PAUSE_IND_pol2_start_TSS_WT_KD.pdf"))
+for(GR in GR_list_toPlot){
+  seqPlotSDoutliers_scaleFact(c(pol2_ctrl_N_RPGC, pol2_nelf_N_RPGC),tmp,GR,c(0,4),c(5000,5000),type="af",bin=10,
+                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
+
+
+
+# ZSCORE_H3K36me3_2C4_H3K36me3_2N4_f - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_ZSCORE_H3K36me3_2C4_H3K36me3_2N4_f.pdf"))
+for(GR in GR_list_toPlot){
+  seqPlotSDoutliers_scaleFact(c(pol2_ctrl_N_RPGC, pol2_nelf_N_RPGC),tmp,GR,c(0,4),c(5000,5000),type="af",bin=10,
+                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
+
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_PAUSE_IND_FSEA4_ctrl.pdf"))
+for(GR in GR_list_toPlot_ctrl){
+  seqPlotSDoutliers_scaleFact(c(H3K36me3_FSEA4_Luc, H3K36me3_FSEA4_Nelf),tmp,GR,c(0,4000),c(5000,5000),type="af",bin=10,
+                              smooth=FALSE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/RNA_POL2/AVG_RNA_POL2_PAUSE_IND_WT3_ctrl.pdf"))
+for(GR in GR_list_toPlot_ctrl){
+  seqPlotSDoutliers_scaleFact(c(H3K36me3_FWT3_Luc, H3K36me3_FWT3_Nelf),tmp,GR,c(0,4000),c(5000,5000),type="af",bin=10,
+                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#594d32", "#e09d00")) 
+}
+dev.off()
+
