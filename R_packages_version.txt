@@ -1,0 +1,20 @@
+
+R version 4.4.3 (2025-02-28) -- "Trophy Case"
+
+Packages		Version
+
+GenomicRanges		1.58.0
+Genomicfeatures		1.58.0
+rtracklayer		1.66.0
+ggplot2			3.5.1
+seqplots		1.23.3
+ggrepel			0.9.6
+dplyr			1.1.4
+grid			4.4.3
+gridBase		0.4-7
+gridExtra		2.3
+ggpubr			0.6.0
+rstatix			0.7.2
+textplot		0.2.2
+BioGenerics		0.52.0
+
