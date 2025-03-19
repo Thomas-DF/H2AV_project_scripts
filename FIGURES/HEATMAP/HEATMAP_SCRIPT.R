@@ -5,15 +5,8 @@
 library(GenomicRanges)
 library(ggplot2)
 library(ggpubr) 
-'%ni%' = Negate('%in%')
 require(BiocGenerics)
-require(parallel)
-library(Rsamtools)
-library("GenomicFeatures")
-library("GenomicAlignments")
-library("BiocParallel")
 library(rtracklayer)
-library(nucleR)
 library(gridBase)
 
 #####################################################################################-
