@@ -28,15 +28,6 @@ r6_ref_genes = readRDS(paste0(workdir,"DATA/r6.13/TxDb.GR.dm6.RDS"))
 
 
 
-#### CHIPSEQ
-
-H3K36me3_FSEA4_Luc = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FSEA4_Luc.bigWig")
-H3K36me3_FSEA4_Nelf = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FSEA4_Nelf.bigWig")
-
-H3K36me3_FWT3_Luc = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FWT3_Luc.bigWig")
-H3K36me3_FWT3_Nelf = paste0(workdir,"DATA/H3K36me3/ChIP_H3K36me3_FWT3_Nelf.bigWig")
-
-
 #### DRIPSEQ
 
 DRIP_HLuc = paste0(workdir,"DATA/DRIPseq/DRIP_HLuc.bigWig")
@@ -100,37 +91,13 @@ GR_list_toPlot = c("GR_UP_5_ZSCORE_H3K36me3_2C4_vs_2N4", "GR_UP_1_ZSCORE_H3K36me
 #         PLOT  ----
 #####################################################################################-
 
-
-#### CHIPSEQ
-
-# H3K36me3 FSEA4 - AVERAGE PLOT
-
-
-pdf(paste0(workdir,"FIGURES/AVG_PROF/H3K36me3/AVG_PROF_H3K36me3_FSEA4.pdf"))
-for(GR in GR_list_toPlot){
-  seqPlotSDoutliers_scaleFact(c(H3K36me3_FSEA4_Luc, H3K36me3_FSEA4_Nelf),tmp,GR,c(0,7000),c(5000,5000),type="af",bin=10,
-                              smooth=FALSE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
-}
-dev.off()
-
-
-# H3K36me3 WT3 - AVERAGE PLOT
-
-pdf(paste0(workdir,"FIGURES/AVG_PROF/H3K36me3/AVG_PROF_H3K36me3_FWT3.pdf"))
-for(GR in GR_list_toPlot){
-  seqPlotSDoutliers_scaleFact(c(H3K36me3_FWT3_Luc, H3K36me3_FWT3_Nelf),tmp,GR,c(0,7000),c(5000,5000),type="af",bin=10,
-                              smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
-}
-dev.off()
-
-
 #### DRIPSEQ
 
 # H3K36me3 HLuc - AVERAGE PLOT
 
 pdf(paste0(workdir,"FIGURES/AVG_PROF/H3K36me3/AVG_PROF_H3K36me3_DRIP_HLuc.pdf"))
 for(GR in GR_list_toPlot){
-  seqPlotSDoutliers_scaleFact(c(DRIP_HLuc, DRIP_HLuc_RNAse),tmp,GR,c(0,500),c(5000,5000),type="af",bin=10,
+  seqPlotSDoutliers_scaleFact(c(DRIP_HLuc, DRIP_HLuc_RNAse),tmp,GR,c(0,500),c(250,250),type="af",bin=10,
                               smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
 }
 dev.off()
@@ -140,7 +107,7 @@ dev.off()
 
 pdf(paste0(workdir,"FIGURES/AVG_PROF/H3K36me3/AVG_PROF_H3K36me3_DRIP_HypB.pdf"))
 for(GR in GR_list_toPlot){
-  seqPlotSDoutliers_scaleFact(c(DRIP_HypB, DRIP_HypB_RNAse),tmp,GR,c(0,500),c(5000,5000),type="af",bin=10,
+  seqPlotSDoutliers_scaleFact(c(DRIP_HypB, DRIP_HypB_RNAse),tmp,GR,c(0,500),c(250,250),type="af",bin=10,
                               smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
 }
 dev.off()
@@ -150,7 +117,7 @@ dev.off()
 
 pdf(paste0(workdir,"FIGURES/AVG_PROF/H3K36me3/AVG_PROF_H3K36me3_DRIP_Nelf.pdf"))
 for(GR in GR_list_toPlot){
-  seqPlotSDoutliers_scaleFact(c(DRIP_Nelf, DRIP_Nelf_RNAse),tmp,GR,c(0,500),c(5000,5000),type="af",bin=10,
+  seqPlotSDoutliers_scaleFact(c(DRIP_Nelf, DRIP_Nelf_RNAse),tmp,GR,c(0,500),c(250,250),type="af",bin=10,
                               smooth=TRUE,spar=0.3, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
 }
 dev.off()
