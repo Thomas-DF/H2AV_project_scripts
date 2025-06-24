@@ -36,7 +36,20 @@ H2AV_SEA4_Nelf_KD = paste0(workdir,"DATA/CHIPSEQ/H2AV-R2_SEA4_Nelf-KD_RPGC.bw")
 H2AV_WT3_Luc_KD = paste0(workdir,"DATA/CHIPSEQ/H2AV-R2_WT3_Luc-KD_RPGC.bw")
 H2AV_WT3_Nelf_KD = paste0(workdir,"DATA/CHIPSEQ/H2AV-R2_WT3_Nelf-KD_RPGC.bw")
 
+# replicats 2
+H2AV_SEA4_Luc_KD_R2 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/P_SEA4_bis_RPGC.bw")
+H2AV_SEA4_Nelf_KD_R2 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/P_SEA4_N_bis_RPGC.bw")
 
+H2AV_WT3_Luc_KD_R2 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/P_WT3_bis_RPGC.bw")
+H2AV_WT3_Nelf_KD_R2 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/P_WT3_N_bis_RPGC.bw")
+
+
+# replicats 3
+H2AV_SEA4_Luc_KD_R3 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/SEA4_pH2AV_L_RPGC.bw")
+H2AV_SEA4_Nelf_KD_R3 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/SEA4_pH2AV_N_RPGC.bw")
+
+H2AV_WT3_Luc_KD_R3 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/WT3_pH2AV_L_RPGC.bw")
+H2AV_WT3_Nelf_KD_R3 = paste0(workdir,"DATA/CHIPSEQ/H2AV_SEA4_WT3/WT3_pH2AV_N_RPGC.bw")
 #####################################################################################-
 
 ## GENE GROUPES 
@@ -130,7 +143,7 @@ dev.off()
 
 pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_SEA4_H3K36me3_2C4.pdf"))
 for(GR in GR_list_toPlot_H3K36me3){
-  seqPlotSDoutliers_scaleFact(c(H2AV_SEA4_Luc_KD,H2AV_SEA4_Nelf_KD),tmp,GR,c(0,15),c(250,250),type="af",bin=10,
+  seqPlotSDoutliers_scaleFact(c(H2AV_SEA4_Luc_KD,H2AV_SEA4_Nelf_KD),tmp,GR,c(0,10),c(250,250),type="af",bin=10,
                               smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
 }
 dev.off()
@@ -140,7 +153,59 @@ dev.off()
 
 pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_WT3_H3K36me3_2C4.pdf"))
 for(GR in GR_list_toPlot_H3K36me3){
-  seqPlotSDoutliers_scaleFact(c(H2AV_WT3_Luc_KD,H2AV_WT3_Nelf_KD),tmp,GR,c(0,15),c(250,250),type="af",bin=10,
+  seqPlotSDoutliers_scaleFact(c(H2AV_WT3_Luc_KD,H2AV_WT3_Nelf_KD),tmp,GR,c(0,10),c(250,250),type="af",bin=10,
+                              smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
+}
+dev.off()
+
+
+
+
+
+###### REPLICATS 2
+
+## H2AV_SEA4 - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_SEA4_H3K36me3_2C4_R2.pdf"))
+for(GR in GR_list_toPlot_H3K36me3){
+  seqPlotSDoutliers_scaleFact(c(H2AV_SEA4_Luc_KD_R2,H2AV_SEA4_Nelf_KD_R2),tmp,GR,c(0,15),c(250,250),type="af",bin=10,
+                              smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
+}
+dev.off()
+
+
+## H2AV_WT3 - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_WT3_H3K36me3_2C4_R2.pdf"))
+for(GR in GR_list_toPlot_H3K36me3){
+  seqPlotSDoutliers_scaleFact(c(H2AV_WT3_Luc_KD_R2,H2AV_WT3_Nelf_KD_R2),tmp,GR,c(0,15),c(250,250),type="af",bin=10,
+                              smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
+}
+dev.off()
+
+
+
+
+
+
+
+###### REPLICATS 3
+
+## H2AV_SEA4 - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_SEA4_H3K36me3_2C4_R3.pdf"))
+for(GR in GR_list_toPlot_H3K36me3){
+  seqPlotSDoutliers_scaleFact(c(H2AV_SEA4_Luc_KD_R3,H2AV_SEA4_Nelf_KD_R3),tmp,GR,c(1,6),c(250,250),type="af",bin=10,
+                              smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
+}
+dev.off()
+
+
+## H2AV_WT3 - AVERAGE PLOT
+
+pdf(paste0(workdir,"FIGURES/AVG_PROF/H2AV_SEA4_WT3/AVG_PROF_H2AV_WT3_H3K36me3_2C4_R3.pdf"))
+for(GR in GR_list_toPlot_H3K36me3){
+  seqPlotSDoutliers_scaleFact(c(H2AV_WT3_Luc_KD_R3,H2AV_WT3_Nelf_KD_R3),tmp,GR,c(1,6),c(250,250),type="af",bin=10,
                               smooth=FALSE,spar=0.20, scalingF = c(1,1), sd=c(T,3), gnme=NA, colvec = c("#285bad", "#eb3434")) 
 }
 dev.off()

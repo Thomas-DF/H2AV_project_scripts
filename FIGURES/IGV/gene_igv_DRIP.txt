@@ -1,0 +1,9 @@
+TOP 5% augmentation H2AV (down 5% du zscore WT-NELF) / TOP 5% Zscore DRIP NELF +/- RNAse
+
+FBgn0261243 (Psa) : chr3L:1,501,846-1,518,100
+
+FBgn0020910 (Rpl3) : chr3R:11,221,562-11,223,880
+
+FBgn0011787 (mRpL12) : chr3L:8,956,172-8,958,203
+
+

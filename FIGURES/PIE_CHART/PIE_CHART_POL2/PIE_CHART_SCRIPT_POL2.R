@@ -57,7 +57,7 @@ seqlevels(starrseq_ENHANCER) = paste0("chr", seqlevels(starrseq_ENHANCER))
 
 r6_ref_genes_PROM = promoters(r6_ref_genes, upstream=250, downstream=0 )
 
-r6_ref_genes_TES = terminators(r6_ref_genes, upstream=0, downstream=250 )
+r6_ref_genes_TES = promoters(r6_ref_genes, upstream=0, downstream=250 )
 
 
 #####################################################################################-

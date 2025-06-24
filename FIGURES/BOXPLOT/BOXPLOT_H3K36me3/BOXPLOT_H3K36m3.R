@@ -41,34 +41,6 @@ Q_ChIP_H3K36me3_FWT3_Luc[is.na(Q_ChIP_H3K36me3_FWT3_Luc)] = 0
 Q_ChIP_H3K36me3_FWT3_Nelf[is.na(Q_ChIP_H3K36me3_FWT3_Nelf)] = 0
 
 
-### DRIPSEQ
-
-Q_DRIP_HLuc = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_HLuc_profmat_readsCounts_GB_SCALED.RDS"))
-Q_DRIP_HLuc_RNAse = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_HLuc_RNAse_profmat_readsCounts_GB_SCALED.RDS"))
-
-Q_DRIP_Nelf = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_Nelf_profmat_readsCounts_GB_SCALED.RDS"))
-Q_DRIP_Nelf_RNAse = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_Nelf_RNAse_profmat_readsCounts_GB_SCALED.RDS"))
-
-Q_DRIP_HypB = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_HypB_profmat_readsCounts_GB_SCALED.RDS"))
-Q_DRIP_HypB_RNAse = readRDS(paste0(workdir,"DATA/QUANTIF/Q_DRIP_HypB_RNAse_profmat_readsCounts_GB_SCALED.RDS"))
-
-Q_DRIP_HLuc[is.na(Q_DRIP_HLuc)] = 0
-Q_DRIP_HLuc_RNAse[is.na(Q_DRIP_HLuc_RNAse)] = 0
-
-Q_DRIP_Nelf[is.na(Q_DRIP_Nelf)] = 0
-Q_DRIP_Nelf_RNAse[is.na(Q_DRIP_Nelf_RNAse)] = 0
-
-Q_DRIP_HypB[is.na(Q_DRIP_HypB)] = 0
-Q_DRIP_HypB_RNAse[is.na(Q_DRIP_HypB_RNAse)] = 0
-
-
-ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse = readRDS(paste0(workdir,"DATA/ZSCORE/ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse.RDS"))
-ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse =  readRDS(paste0(workdir,"DATA/ZSCORE/ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse.RDS"))
-
-ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse[is.na(ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse)] = 0
-ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse[is.na(ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse)] = 0
-
-
 #####################################################################################-
 
 ##### GENES GROUPS
@@ -175,68 +147,5 @@ Boxplot_wilcoxListFilter_REF(quantifWT = Q_ChIP_H3K36me3_FWT3_Nelf, quantifKD = 
 Boxplot_wilcoxListFilter_REF(quantifWT = Q_ChIP_H3K36me3_FWT3_Luc, quantifKD = Q_ChIP_H3K36me3_FSEA4_Luc, cond1 = "Q_ChIP_H3K36me3_FWT3_Luc", cond2="Q_ChIP_H3K36me3_FSEA4_Luc", filterGNList = LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
                              effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
                              outdir = outfig, readQuantif = "Q_ChIP_H3K36me3_FWT3_Luc", Cond = "Q_ChIP_H3K36me3_FSEA4_Luc", select = "LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-
-
-
-#####################################################################################-
-
-#### DRIPSEQ
-
-### LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4
-
-## HLuc /  HLuc RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_HLuc, quantifKD = Q_DRIP_HLuc_RNAse, cond1 = "Q_DRIP_HLuc", cond2="Q_DRIP_HLuc_RNAse", filterGNList = LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_HLuc", Cond = "Q_DRIP_HLuc_RNAse", select = "LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-## Nelf / Nelf RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_Nelf, quantifKD = Q_DRIP_Nelf_RNAse, cond1 = "Q_DRIP_Nelf", cond2="Q_DRIP_Nelf_RNAse", filterGNList = LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_Nelf", Cond = "Q_DRIP_Nelf_RNAse", select = "LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-## HypB / HypB RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_HypB, quantifKD = Q_DRIP_HypB_RNAse, cond1 = "Q_DRIP_HypB", cond2="Q_DRIP_HypB_RNAse", filterGNList = LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_HypB", Cond = "Q_DRIP_HypB_RNAse", select = "LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-## ZSCORE HLuc_vs_HLuc_RNAse / ZSCORE Nelf_vs_Nelf_RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse, quantifKD = ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse, cond1 = "ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse", cond2="ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse", filterGNList = LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=F,
-                             outdir = outfig, readQuantif = "ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse", Cond = "ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse", select = "LIST_5_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-
-
-### LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4
-
-## HLuc /  HLuc RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_HLuc, quantifKD = Q_DRIP_HLuc_RNAse, cond1 = "Q_DRIP_HLuc", cond2="Q_DRIP_HLuc_RNAse", filterGNList = LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_HLuc", Cond = "Q_DRIP_HLuc_RNAse", select = "LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-## Nelf / Nelf RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_Nelf, quantifKD = Q_DRIP_Nelf_RNAse, cond1 = "Q_DRIP_Nelf", cond2="Q_DRIP_Nelf_RNAse", filterGNList = LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_Nelf", Cond = "Q_DRIP_Nelf_RNAse", select = "LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-## HypB / HypB RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = Q_DRIP_HypB, quantifKD = Q_DRIP_HypB_RNAse, cond1 = "Q_DRIP_HypB", cond2="Q_DRIP_HypB_RNAse", filterGNList = LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
-                             outdir = outfig, readQuantif = "Q_DRIP_HypB", Cond = "Q_DRIP_HypB_RNAse", select = "LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
-
-## ZSCORE HLuc_vs_HLuc_RNAse / ZSCORE Nelf_vs_Nelf_RNAse
-
-Boxplot_wilcoxListFilter_REF(quantifWT = ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse, quantifKD = ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse, cond1 = "ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse", cond2="ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse", filterGNList = LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4,
-                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=F,
-                             outdir = outfig, readQuantif = "ZSCORE_PROFMAT_Q_DRIP_HLuc_vs_HLuc_RNAse", Cond = "ZSCORE_PROFMAT_Q_DRIP_Nelf_vs_Nelf_RNAse", select = "LIST_1_UP_CTRL_ZSCORE_H3K36me3_2C4_vs_2N4", info = NULL)
-
 
 

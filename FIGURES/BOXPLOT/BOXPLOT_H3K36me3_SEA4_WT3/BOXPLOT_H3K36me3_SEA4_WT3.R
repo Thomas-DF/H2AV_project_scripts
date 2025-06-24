@@ -196,3 +196,19 @@ Boxplot_wilcoxListFilter_REF(quantifWT = H3K36me3_FWT3_Luc, quantifKD = H3K36me3
                              effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
                              outdir = outfig2, readQuantif = "H3K36me3_FWT3_Luc", Cond = "H3K36me3_FWT3_Nelf", select = "LIST_Q_H3K36me3_2C4", info = NULL)
 
+
+
+
+
+
+
+
+
+
+Boxplot_wilcoxListFilter_REF(quantifWT = H3K36me3_FWT3_Luc, quantifKD = H3K36me3_FSEA4_Luc, cond1 = "H3K36me3_FWT3_Luc", cond2="H3K36me3_FSEA4_Luc", filterGNList = LIST_5_UP_DN_Q_H3K36me3_2C4,
+                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
+                             outdir = outfig2, readQuantif = "H3K36me3_FWT3_Luc", Cond = "H3K36me3_FSEA4_Luc", select = "LIST_5_UP_DN_Q_H3K36me3_2C4", info = NULL)
+
+Boxplot_wilcoxListFilter_REF(quantifWT = H3K36me3_FWT3_Nelf, quantifKD = H3K36me3_FSEA4_Nelf, cond1 = "H3K36me3_FWT3_Nelf", cond2="H3K36me3_FSEA4_Nelf", filterGNList = LIST_5_UP_DN_Q_H3K36me3_2C4,
+                             effMin =500,  SampleNorm = c(F, "NULL"),YLIM =NULL, bxplt_color = c("#285bad", "#eb3434"), outlierTH = 0.01, logTrans=T,
+                             outdir = outfig2, readQuantif = "H3K36me3_FWT3_Nelf", Cond = "H3K36me3_FSEA4_Nelf", select = "LIST_5_UP_DN_Q_H3K36me3_2C4", info = NULL)
