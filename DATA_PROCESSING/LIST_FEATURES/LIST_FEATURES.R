@@ -16,6 +16,38 @@ LIST_QUANTIF = readRDS(paste0(workdir, "PROJET_H2AV/DATA/LIST_FEATURES/LIST_QUAN
 LIST_H2AV_VEC = readRDS(paste0(workdir, "PROJET_H2AV/DATA/LIST_FEATURES/LIST_H2AV_VEC.RDS"))
 
 
+#########################################################################################################################
+# UTILS FUNCTIONS
+#########################################################################################################################
+
+matMeans <- function(X,Y){ mean(c(X,Y)) }
+
+matReplaceNA = function(M){
+  Mv = c(M)
+  Mv[which(is.na(Mv))] = 0
+  Mv = matrix(Mv, ncol=1)
+  rownames(Mv) = rownames(M)
+  return(Mv)
+}
+
+matReplaceINF = function(M){
+  Mv = c(M)
+  Mv[is.finite(Mv) %in% FALSE] = 0
+  Mv = matrix(Mv, ncol=1)
+  rownames(Mv) = rownames(M)
+  return(Mv)
+}
+
+computeZscore = function(Q_KD, Q_CTRL){
+  ZSCORE = (Q_KD-Q_CTRL[names(Q_KD)])/sqrt(matrix(mapply(matMeans, Q_KD, Q_CTRL), ncol=1))
+  ZSCORE = matReplaceNA(ZSCORE)
+  ZSCORE = matReplaceINF(ZSCORE)
+  rownames(ZSCORE) = names(Q_KD)
+  ZSCORE  = ZSCORE[,1]
+  ZSCORE = ZSCORE[order(ZSCORE, decreasing=T),drop=F]
+  return(ZSCORE)
+}
+
 
 #########################################################################################################################
 ###########################################   CHIP SEQ H3K36me3     #####################################################
